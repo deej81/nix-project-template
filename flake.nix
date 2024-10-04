@@ -80,5 +80,29 @@
         };
 
       };
+
+      init_script = forAllSystems (system:
+        let pkgs = nixpkgsFor.${system};
+        in {
+          default =
+            pkgs.writeScript "runit" ''
+              #!/usr/bin/env sh
+              ${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
+            '';
+        }
+      );
+
+      # Add an app to directly run copier
+      apps = forAllSystems (system:
+        let pkgs = nixpkgsFor.${system};
+        in {
+          initialise = {
+            type = "app";
+            description = "Run Copier";
+            # Define how copier will be run using nix run
+            program = "${self.init_script.${system}.default}";
+          };
+        }
+      );
     };
 }

@@ -21,15 +21,8 @@
       ssh-to-age
       sops
       fzf
-      postgresql
-      python311
-      (poetry.override { python3 = python311; })
       dive
       nil
     ];
-
-    shellHook = ''
-      poetry install
-    '';
   };
 }
