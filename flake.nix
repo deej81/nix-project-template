@@ -42,8 +42,8 @@
             pkgs.writeScript "runit" ''
               #!/usr/bin/env sh
               
-              # ${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
-              ${pkgs.copier}/bin/copier copy /home/deej/code/personal/nix-project-template .
+              ${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
+              # ${pkgs.copier}/bin/copier copy /home/deej/code/personal/nix-project-template .
 
               output_file="public_keys.txt"
               github_username=$(${pkgs.yq}/bin/yq -r '.github_username' .copier-answers.yml )
