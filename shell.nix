@@ -23,6 +23,7 @@
       fzf
       dive
       nil
+      copier
     ];
   };
 }

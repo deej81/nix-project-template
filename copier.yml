@@ -1,6 +1,17 @@
 _exclude:
   - README.md
+  - .git
+  - flake.lock
+  - copier.yml
 
 project_name:
     type: str
     help: What is your project name?
+
+github_username:
+    type: str
+    help: What is your GitHub username?
+
+username:
+    type: str
+    help: Choose an initial username for the project

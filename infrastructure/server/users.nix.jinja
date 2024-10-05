@@ -1,0 +1,15 @@
+{ config, pkgs, ... }:
+
+let
+  publicKeys = builtins.filter (x: builtins.isString x && x != "") (builtins.split "\n" (builtins.readFile ../../public_keys.txt));
+in
+{
+  users.users = {
+    {{username}} = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" "networkmanager" ];
+      openssh.authorizedKeys.keys = publicKeys;
+      password = "";
+    };
+  };
+}

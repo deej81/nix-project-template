@@ -3,16 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/release-24.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    sops-nix = {
-      url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hardware.url = "github:nixos/nixos-hardware";
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = { self, nixpkgs, disko, ... } @ inputs:
@@ -45,50 +35,26 @@
         in import ./shell.nix { inherit pkgs; }
       );
 
-      nixosConfigurations = {
-        thinkpad = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            disko.nixosModules.disko
-            {
-              disko.devices.disk.main.device = "/dev/nvme0n1";
-            }
-            ./infrastructure/server/configuration.nix
-            ./infrastructure/server/hardware/thinkpad/hardware-configuration.nix
-          ];
-        };
-
-        qemuvm = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            disko.nixosModules.disko
-            {
-              disko.devices.disk.main.device = "/dev/sda";
-            }
-            ./infrastructure/server/configuration.nix
-            ./infrastructure/server/hardware/vm/hardware-configuration.nix
-          ];
-        };
-
-        vmISO = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./infrastructure/server/hardware/custom-iso.nix
-          ];
-        };
-
-      };
-
       init_script = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
         in {
           default =
             pkgs.writeScript "runit" ''
               #!/usr/bin/env sh
-              ${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
-            '';
+              
+              # ${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
+              ${pkgs.copier}/bin/copier copy /home/deej/code/personal/nix-project-template .
+
+              output_file="public_keys.txt"
+              github_username=$(${pkgs.yq}/bin/yq -r '.github_username' .copier-answers.yml )
+              public_keys=$(${pkgs.curl}/bin/curl -s "https://github.com/$github_username.keys")
+              echo "$public_keys" >> "$output_file"
+
+              echo "Public keys have been written to $output_file"
+
+              ${pkgs.git}/bin/git init
+              ${pkgs.git}/bin/git add .
+              '';
         }
       );
 

@@ -1,5 +1,7 @@
 { pkgs, modulesPath, lib, ... }:
-
+let
+  publicKeys = builtins.filter (x: builtins.isString x && x != "") (builtins.split "\n" (builtins.readFile ../../../public_keys.txt));
+in
 {
   imports = [
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
@@ -12,13 +14,9 @@
   ];
 
   systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKd3A1YkY2EjkOU9/mxOECBGkvUq09QzIAZO7hEhqJ6U" # Dan's key
-  ];
+  users.users.root.openssh.authorizedKeys.keys = publicKeys;
 
-  users.users.nixos.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKd3A1YkY2EjkOU9/mxOECBGkvUq09QzIAZO7hEhqJ6U" # Dan's key
-  ];
+  users.users.nixos.openssh.authorizedKeys.keys = publicKeys;
 
   isoImage.isoName = lib.mkForce "bot-nixos-installer.iso";
 
