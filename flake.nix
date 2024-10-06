@@ -42,15 +42,20 @@
             pkgs.writeScript "runit" ''
               #!/usr/bin/env sh
               
-              ${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
-              # ${pkgs.copier}/bin/copier copy /home/deej/code/personal/nix-project-template .
+              #${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
+              ${pkgs.copier}/bin/copier copy /home/deej/code/personal/nix-project-template .
 
-              output_file="public_keys.txt"
-              github_username=$(${pkgs.yq}/bin/yq -r '.github_username' .copier-answers.yml )
-              public_keys=$(${pkgs.curl}/bin/curl -s "https://github.com/$github_username.keys")
-              echo "$public_keys" >> "$output_file"
+              include_vps=$(${pkgs.yq}/bin/yq -r '.include_vps' .copier-answers.yml )
+              if [ "$include_vps" = "true" ]; then
+                echo "Including VPS configuration"
+                output_file="public_keys.txt"
+                github_username=$(${pkgs.yq}/bin/yq -r '.github_username' .copier-answers.yml )
+                public_keys=$(${pkgs.curl}/bin/curl -s "https://github.com/$github_username.keys")
+                echo "$public_keys" >> "$output_file"
 
-              echo "Public keys have been written to $output_file"
+                echo "Public keys have been written to $output_file"
+                
+              fi
 
               ${pkgs.git}/bin/git init
               ${pkgs.git}/bin/git add .

@@ -1,21 +1,26 @@
 _exclude:
   - README.md
   - .git
-  - flake.lock
   - copier.yml
 
 project_name:
     type: str
     help: What is your project name?
 
+include_vps:
+    type: bool
+    help: Do you want to include VPS configuration?
+
 github_username:
     type: str
     help: What is your GitHub username?
+    when: "{% if include_vps %}true{% endif %}"
 
 username:
     type: str
     help: Choose an initial username for the project
-
+    when: "{% if include_vps %}true{% endif %}"
 
 _skip_if_exists:
     - ./infrastructure/configuration.nix
+    - flake.lock

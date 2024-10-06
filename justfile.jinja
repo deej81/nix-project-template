@@ -3,6 +3,7 @@
 default:
   just --list --unsorted
 
+{% if include_vps %}
 create-vm-disk:
     rm -fr .vm-disk
     mkdir .vm-disk
@@ -37,4 +38,6 @@ run-vm:
 build-iso:
     #nix build .#nixosConfigurations.installerISO.config.system.build.isoImage
     nix run nixpkgs#nixos-generators -- --format iso --flake .#vmISO -o result
+
+{% endif %}
 

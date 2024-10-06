@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/release-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    {% if include_vps %}
     sops-nix = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,6 +15,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    {% endif %}
   };
 
   outputs = { self, nixpkgs, disko, ... } @ inputs:
@@ -44,6 +47,8 @@
         let pkgs = nixpkgsFor.${system};
         in import ./shell.nix { inherit pkgs; }
       );
+
+      {% if include_vps %}
 
       nixosConfigurations = {
         thinkpad = nixpkgs.lib.nixosSystem {
@@ -82,5 +87,7 @@
         };
 
       };
+
+      {% endif %}
     };
 }
