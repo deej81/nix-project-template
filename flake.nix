@@ -42,8 +42,8 @@
             pkgs.writeScript "runit" ''
               #!/usr/bin/env sh
               
-              #${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
-              ${pkgs.copier}/bin/copier copy /home/deej/code/personal/nix-project-template .
+              ${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
+              #${pkgs.copier}/bin/copier copy /home/deej/code/personal/nix-project-template .
 
               include_vps=$(${pkgs.yq}/bin/yq -r '.include_vps' .copier-answers.yml )
               if [ "$include_vps" = "true" ]; then
