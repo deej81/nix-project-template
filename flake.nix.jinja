@@ -51,20 +51,7 @@
       {% if include_vps %}
 
       nixosConfigurations = {
-        thinkpad = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            disko.nixosModules.disko
-            {
-              disko.devices.disk.main.device = "/dev/nvme0n1";
-            }
-            ./infrastructure/server/base-config.nix
-            ./infrastructure/server/configuration.nix
-            ./infrastructure/server/hardware/thinkpad/hardware-configuration.nix
-          ];
-        };
-
+        # vm to get us started
         qemuvm = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };

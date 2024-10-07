@@ -5,3 +5,4 @@ to scaffod in current directory
 ```bash
 nix run github:deej81/nix-project-template#initialise
 ```
+do next - secrets with age nix
