@@ -42,8 +42,17 @@
             pkgs.writeScript "runit" ''
               #!/usr/bin/env sh
               
-              ${pkgs.copier}/bin/copier copy https://github.com/deej81/nix-project-template .
-              #${pkgs.copier}/bin/copier copy /home/deej/code/personal/nix-project-template .
+              template_path="https://github.com/deej81/nix-project-template"
+
+              # Check if argument "local" is passed
+              if [ "$1" = "local" ]; then
+                template_path="/home/deej/code/personal/nix-project-template"
+                echo "Using local template at $template_path"
+              else
+                echo "Using remote template from $template_path"
+              fi
+
+              ${pkgs.copier}/bin/copier copy "$template_path" .
 
               include_vps=$(${pkgs.yq}/bin/yq -r '.include_vps' .copier-answers.yml )
               if [ "$include_vps" = "true" ]; then
@@ -63,14 +72,12 @@
         }
       );
 
-      # Add an app to directly run copier
       apps = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
         in {
           initialise = {
             type = "app";
             description = "Run Copier";
-            # Define how copier will be run using nix run
             program = "${self.init_script.${system}.default}";
           };
         }
