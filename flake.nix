@@ -86,6 +86,11 @@
             description = "Run Copier";
             program = "${self.init_script.${system}.default}";
           };
+          update = {
+            type = "app";
+            description = "Update Copier";
+            program = "${pkgs.copier}/bin/copier update";
+          };
         }
       );
     };
