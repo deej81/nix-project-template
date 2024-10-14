@@ -38,7 +38,7 @@
       init_script = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
         in {
-          default =
+          init =
             pkgs.writeScript "runit" ''
               #!/usr/bin/env sh
               
@@ -75,6 +75,12 @@
               ${pkgs.git}/bin/git init
               ${pkgs.git}/bin/git add .
               '';
+
+          update = pkgs.writeScript "runit" ''
+              #!/usr/bin/env sh
+              ${pkgs.copier}/bin/copier update
+              '';
+
         }
       );
 
@@ -84,12 +90,12 @@
           initialise = {
             type = "app";
             description = "Run Copier";
-            program = "${self.init_script.${system}.default}";
+            program = "${self.init_script.${system}.init}";
           };
           update = {
             type = "app";
             description = "Update Copier";
-            program = "${pkgs.copier}/bin/copier update";
+            program = "${self.init_script.${system}.update}";
           };
         }
       );
