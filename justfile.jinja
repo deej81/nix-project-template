@@ -22,7 +22,8 @@ run-vm-install-mode: build-iso create-vm-disk
     -enable-kvm
 
 # installs the configuration to the vm (vm must be in install mode)
-configure-vm IP="localhost" FLAKE="qemuvm" PORT="2222":
+configure-vm IP="127.0.0.1" FLAKE="qemuvm" PORT="2222":
+    {{ 'python infrastructure/tools/add_new_host.py {{IP}} --port {{PORT}} '}}
     nix run github:nix-community/nixos-anywhere -- --copy-host-keys --flake .#{{FLAKE}} --debug --ssh-port {{PORT}} nixos@{{IP}}
 
 run-vm:

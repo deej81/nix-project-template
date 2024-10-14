@@ -63,6 +63,12 @@
                 echo "$public_keys" >> "$output_file"
 
                 echo "Public keys have been written to $output_file"
+
+                echo "verifying private key presence"
+                ${pkgs.python3}/bin/python3 infrastructure/tools/setup_private_key.py
+
+                echo "enter an initial password for your user"
+                ${pkgs.python3}/bin/python3 infrastructure/tools/set_user_password.py
                 
               fi
 

@@ -9,7 +9,7 @@ in
       isNormalUser = true;
       extraGroups = [ "wheel" "networkmanager" ];
       openssh.authorizedKeys.keys = publicKeys;
-      password = "";
+      hashedPasswordFile = config.sops.secrets.initial_password.path;
     };
   };
 }

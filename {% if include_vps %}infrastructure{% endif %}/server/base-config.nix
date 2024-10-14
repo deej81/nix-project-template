@@ -2,6 +2,7 @@
   imports = [
     ./hardware/simple-disk-config.nix
     ./users.nix
+    ./secrets.nix
   ];
 
   

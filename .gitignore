@@ -1,2 +1,3 @@
 .direnv
 .vm-disk
+__pycache__
