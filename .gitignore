@@ -1,3 +1,6 @@
 .direnv
 .vm-disk
 __pycache__
+.aider*
+!.aider.conf.yml
+!.aider.model.settings.yml

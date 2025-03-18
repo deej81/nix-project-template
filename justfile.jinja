@@ -3,6 +3,10 @@
 default:
   just --list --unsorted
 
+# Run the aider AI assistant for coding
+aider:
+  aider --anthropic-api-key $(op read "op://Personal/claude api key/password") --config ./.aider.conf.yml  --no-gitignore
+
 {% if include_vps %}
 create-vm-disk:
     rm -fr .vm-disk
