@@ -43,6 +43,7 @@
             age
             ssh-to-age
             sops
+            mkpasswd
           ];
         in {
           init =
