@@ -36,12 +36,14 @@
       );
 
       init_script = forAllSystems (system:
-        let pkgs = nixpkgsFor.${system};
+        let
+          pkgs = nixpkgsFor.${system};
+          python-with-packages = pkgs.python3.withPackages (ps: [ ps.pyyaml ]);
         in {
           init =
             pkgs.writeScript "runit" ''
               #!/usr/bin/env sh
-              
+
               template_path="https://github.com/deej81/nix-project-template"
 
               # Check if argument "local" is passed
@@ -65,11 +67,11 @@
                 echo "Public keys have been written to $output_file"
 
                 echo "verifying private key presence"
-                ${pkgs.python3}/bin/python3 infrastructure/tools/setup_private_key.py
+                ${python-with-packages}/bin/python3 infrastructure/tools/setup_private_key.py
 
                 echo "enter an initial password for your user"
-                ${pkgs.python3}/bin/python3 infrastructure/tools/set_user_password.py
-                
+                ${python-with-packages}/bin/python3 infrastructure/tools/set_user_password.py
+
               fi
 
               ${pkgs.git}/bin/git init
