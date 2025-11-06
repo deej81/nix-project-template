@@ -39,10 +39,17 @@
         let
           pkgs = nixpkgsFor.${system};
           python-with-packages = pkgs.python3.withPackages (ps: [ ps.pyyaml ]);
+          requiredPackages = with pkgs; [
+            age
+            ssh-to-age
+            sops
+          ];
         in {
           init =
             pkgs.writeScript "runit" ''
               #!/usr/bin/env sh
+
+              export PATH="${pkgs.lib.makeBinPath requiredPackages}:$PATH"
 
               template_path="https://github.com/deej81/nix-project-template"
 
