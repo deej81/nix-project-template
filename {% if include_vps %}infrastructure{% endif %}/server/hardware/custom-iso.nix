@@ -18,6 +18,6 @@ in
 
   users.users.nixos.openssh.authorizedKeys.keys = publicKeys;
 
-  isoImage.isoName = lib.mkForce "bot-nixos-installer.iso";
+  isoImage.isoName = lib.mkForce "custom-nixos-installer.iso";
 
 }
