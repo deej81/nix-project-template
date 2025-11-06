@@ -24,6 +24,7 @@
       dive
       nil
       copier
+      mkpasswd
     ];
   };
 }
