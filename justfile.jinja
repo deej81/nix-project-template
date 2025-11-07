@@ -19,7 +19,7 @@ run-vm-install-mode: build-iso create-vm-disk
     -m 4096 \
     -smp 4 \
     -hda .vm-disk/vm.qcow2 \
-    -cdrom result/iso/bot-nixos-installer.iso \
+    -cdrom result/iso/custom-nixos-installer.iso \
     -boot order=cd \
     -net nic \
     -net user,hostfwd=tcp::2222-:22 \
