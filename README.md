@@ -1,5 +1,6 @@
 # Basic scaffold for a nix server project
 
+creates a nix project with optional vps server config.
 
 to scaffod in current directory
 ```bash
@@ -11,4 +12,3 @@ for hacking on this locally
 nix run ../nix-project-template#initialise -- local
 ```
 
-do next - secrets with age nix

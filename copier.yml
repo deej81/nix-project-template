@@ -13,7 +13,7 @@ include_vps:
 
 github_username:
     type: str
-    help: What is your GitHub username?
+    help: What is your GitHub username (for public key disovery)?
     when: "{% if include_vps %}true{% endif %}"
 
 username:
